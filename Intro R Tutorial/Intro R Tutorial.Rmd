@@ -5,7 +5,7 @@ runtime: shiny_prerendered
 ---
 
 ```{r setup, include=FALSE}
-source(here::here("./prep.R"))
+source(here::here("prep.R"))
 knitr::opts_chunk$set(echo = FALSE)
 
 
