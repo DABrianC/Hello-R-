@@ -1,0 +1,248 @@
+---
+title: "What is R and how do I use it?"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+source(here::here("./prep.R"))
+knitr::opts_chunk$set(echo = FALSE)
+
+
+df <- gapminder |>
+  filter(continent == "Africa") |>
+  mutate(log_gdp = log10(gdpPercap)) |>
+  arrange(desc(log_gdp))
+
+df2 <- gapminder |>
+  mutate(log_gdp = log10(gdpPercap))
+```
+
+## Hello, R!
+
+Welcome to this brief introductory tutorial on using R. By the end of this lesson you will understand:
+
+-   Why R is a useful tool
+-   Some examples from the real world
+-   How to install and load a package
+-   How to do a common data manipulation
+-   How to make a common plot
+
+## Why R is a useful tool?
+
+A programming environment, such as R, offers some cool stuff.
+
+-   R is open-source and free. It has a huge support community that is constantly de-bugging and creating new functionalities.
+
+-   If you find an analysis or cool example online, the code is almost always included. The R community is all about sharing.
+
+-   R was developed for statistical programming.
+
+-   If you can imagine an analytic task, I bet you can implement it in R. There may even be a specific package with pre-built functions to make it very easy.
+
+-   Analyses in R are transparent, easily shareable, and reproducible. Can you remember every step you did to visualize a dataset in Excel so that someone else could add to it?
+
+-   R can read and write data in virtually any data format.
+
+-   R can be used for any data science task: scraping websites, developing websites, making static or interactive charts, making dashboards, automating repetitive tasks, statistical computations, text analysis, querying databases, and many others.
+
+-   R has a lot of inter-operability with other platforms.
+
+### Learning check
+```{r checkbox, echo = FALSE}
+question_checkbox("Select all of the reasons why R is useful:"
+                  , answer("It is expensive", correct = FALSE, message = "It is the opposite of expensive."), answer("It can read and write data in virtually any format", correct = TRUE), answer("It promotes transparency in the analytical process", correct = TRUE), answer("It loves me", correct = FALSE, message = "R loves no one."), answer("It was developed specifically for statistics", correct = TRUE), answer("It provides a lot of options for a data scientist", correct = TRUE)
+, allow_retry = TRUE)
+```
+
+## Examples from the real world
+
+This will have some examples plots made in R. For now it's just some random gapminder shit.
+
+```{r chart scroll, figures-grid, fig.show="hold", out.width="50%"}
+
+p1 <- ggplot(gapminder, aes(year, lifeExp, size = pop
+                            , fill = continent))+
+  geom_point(alpha = .4)
+
+p2 <- ggplot(gapminder, aes(lifeExp, gdpPercap, size = pop
+                            , color = continent))+
+  geom_point(alpha = .4)
+
+p3 <- ggplot(gapminder, aes(lifeExp, gdpPercap, size = pop,)) + geom_point(alpha = .4) +
+  ggtitle(label = "plot 3")
+
+p4 <- ggplot(gapminder, aes(year, gdpPercap, size = pop,)) + geom_point(alpha = .4) +
+  ggtitle(label = "plot 4")
+
+p1
+p2
+p3
+p4
+
+```
+
+## A simple exercise
+
+
+Now that we've seen some examples from R, let's take a look at how R works through a simple exercise.
+
+
+*Here's a simple exercise with an empty code chunk provided for entering the answer.*
+
+Write the R code required to add two plus two:
+
+```{r two-plus-two, exercise=TRUE}
+
+```
+
+What did you notice? Much like your old TI-83, R is built to handle numbers and do math without any additional steps involved.
+
+*type some text in quotes*
+
+```{r text, exercise = TRUE}
+
+```
+
+What did you notice? It treats it as text. With R you can paste together text, parse text, edit text, and analyze text.
+
+And it can do so much more!
+
+
+## Let's try it out!
+
+### Installing and loading our first package
+
+Let's load a package that includes some data. Run the code in the next chunk.
+
+```{r load-gapminder, exercise = TRUE}
+
+install.packages("gapminder")
+library(gapminder)
+```
+
+So, what just happened? We loaded the gapminder package which is a subset of the gapminder dataset.
+
+**gapminder:** Gapminder is a country-level time-series dataset of many indicators that we are familiar with in the development field. The full dataset is available at https://www.gapminder.org/. 
+
+Let's take a quick peak at the dataset.
+
+```{r gapminder, exercise = TRUE, exercise.lines = 8}
+#the function head shows the first 6 rows of the dataset
+
+head(gapminder)
+
+#the function tail shows the last 6 rows of the dataset
+
+tail(gapminder)
+
+glimpse(gapminder)
+```
+
+
+Now, it's your turn to load a suite of packages called the `tidyverse`. This suite contains the packages `dplyr` and `ggplot2` -- two packages that you'll use all the time in R for data analysis and visualization.
+
+-   `dplyr` is a grammar of data manipulation, providing a consistent set of verbs that help you solve the most common data manipulation challenges.
+-   `ggplot2` is a system for declaratively creating graphics, based on The Grammar of Graphics. You provide the data, tell ggplot2 how to map variables to aesthetics, what graphical primitives to use, and it takes care of the details.
+
+**Install and load the `tidyverse`**
+
+```{r load-tidyverse, exercise = TRUE}
+
+
+
+```
+
+### Manipulate the gapminder
+
+Now, let's use R to manipulate the gapminder dataset.
+
+```{r gapminder_mani, exercise=TRUE, exercise.lines = 10, exercise.eval=TRUE}
+
+df <- gapminder |>
+  filter(continent == "Africa")|>   #filter the dataset
+  mutate(log_gdp = log10(gdpPercap)) |> #add a new column
+  arrange(desc(log_gdp)) #sort the data
+
+#look at the data
+head(df)
+
+```
+
+### Plot the data
+Below is some code to plot two of the variables in a scatterplot using `ggplot2`. 
+
+```{r gapminder_plot, exercise=TRUE, exercise.eval = TRUE, out.width="75%", fig.align = "center"}
+
+
+ggplot(df, aes(x = lifeExp, y = gdpPercap, size = pop)) +
+  geom_point(aes(color = country)
+             , alpha = .6) +
+  theme(legend.position = "none")
+
+```
+
+Remember how we created a new variable called log_gdp? Recreate the above scatterplot using this new varialbe and compare the outputs.
+
+```{r gapminder_v2, exercise = TRUE, exercise.lines = 10, out.width="75%", fig.align="center"}
+
+```
+
+## Time to fly
+
+Let's take advantage of the power of coding using our gapminder dataset. We made a single plot above, but what if we wanted to compare the logged gdps of countries over time for the whole world?
+
+*First, add the column to the whole dataset. We will call this new dataset df2.*
+
+```{r df_two, exercise = TRUE}
+
+
+```
+
+```{r df_two-solution}
+df2 <- gapminder |>
+  mutate(log_gdp=log10(gdpPercap))
+
+```
+<div id="filter-hint">
+**Hint:** You want to use the dplyr `mutate` function to add a new column.
+</div>
+
+Now that we've created the object, we need to plot it.
+
+```{r df_two_plot, exercise = TRUE, exercise.lines = 10}
+
+
+```
+
+```{r df_two_plot-solution}
+
+ggplot(df2, aes(x = lifeExp, y = log_gdp, color = continent, size = pop)) +
+  geom_point(alpha = .6)
+
+```
+
+Wow, that's a lot of datapoints. Let's make one chart for each continent using ggplot's `facet_wrap` function.
+
+```{r df_two_facet, exercise = TRUE, exercise.lines = 10}
+
+
+```
+
+```{r df_two_facet-hint}
+
+#ggplot uses the + operator to add lines to the code. Copy the original plot text and add a + before a new line for facet_wrap(). 
+
+#facet_wrap requires one argument, facets = 'object$column name'. You can specify how many rows or columns you want with nrow = and ncol = 
+
+```
+
+```{r df_two_facet-solution}
+
+ggplot(df2, aes(x = lifeExp, y = log_gdp, color = continent, size = pop)) +
+  geom_point(alpha = .6) +
+  facet_wrap(facets = df2$continent
+             , nrow = 2
+             , ncol = 3)
+
+```
