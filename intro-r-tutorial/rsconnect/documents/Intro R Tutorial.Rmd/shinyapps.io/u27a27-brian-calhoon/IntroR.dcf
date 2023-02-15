@@ -1,0 +1,14 @@
+name: IntroR
+title: IntroR
+username:
+account: u27a27-brian-calhoon
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 8301350
+bundleId: 6845573
+url: https://u27a27-brian-calhoon.shinyapps.io/IntroR/
+when: 1676387737.96235
+lastSyncTime: 1676387737.96236
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: Intro-R-Tutorial.html|prep.R
